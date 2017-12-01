@@ -4,12 +4,8 @@ app = Flask(__name__)
  
 @app.route("/")
 def index():
-    return "Flask App!"
- 
-@app.route("/hello/<string:name>/")
-def hello(name):
     return render_template(
-        'template.html',name=name)
+    	'menu.html')
 @app.route("/login/")
 def inter():
     return render_template(
@@ -20,7 +16,7 @@ def registration():
     return render_template(
         'reg.html')
 
-@app.route("/login/good.html")
+@app.route("/good/")
 def interd():
     return render_template(
         'good.html')
