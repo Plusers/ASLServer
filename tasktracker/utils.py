@@ -51,3 +51,5 @@ def not_authorized(fn):
         else:
             return redirect('/menu')
     return wrapped
+
+    

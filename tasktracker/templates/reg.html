@@ -29,9 +29,11 @@
           <input type="email" name="login" id="inputEmail" class="form-control" placeholder="Логин" required autofocus>
           <label for="inputPassword" class="sr-only">Пароль</label>
           <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
+
+          <label for="inputPassword" class="sr-only">Повторите Пароль</label>
+          <input type="password" name="confirm_password" id="inputPassword" class="form-control" placeholder="Повторите Пароль" required>
         </form>
-        <button class="btn btn-lg btn-primary btn-block" id="post-btn" onclick="send_form()">Войти</button>
-        <button class="btn btn-lg btn-info btn-block" id="post-btn" onclick="location.href='/registration';">Ещё не зарегистрированы?</button>
+        <button class="btn btn-lg btn-primary btn-block" id="post-btn" onclick="send_form()">Зарегистрироваться</button>
       </div>
 
     </div> <!-- /container -->
@@ -40,7 +42,7 @@
     function send_form() {
       $.ajax({
           type:    "POST",
-          url:     "/api/login",
+          url:     "/api/registration",
           data:    $("#reg-form").serialize(),
           success: function(data) {
                 if (data['status'] != 'ok') {

@@ -23,7 +23,11 @@
   </div>
   <div class="container_2">
     <div class="input-group">
-      <input type="text" class="form-control" id="add_task_text" placeholder="Автор Название Класс">
+      <form id="add-form">
+        <input type="text" name="name" class="form-control" id="name" placeholder="Название">
+        <input type="text" name="author" class="form-control" id='author' placeholder="Автор">
+        <input type="text" name="_class" class="form-control" id="_class" placeholder="Класс">
+      </form>
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" onclick="add_task()">Добавить</button>
       </span>
@@ -37,7 +41,7 @@
     function add_task() {
       $.post({
           url:     "/api/add_task",
-          data:    "text=" + $('#add_task_text').val(),
+          data:    $("#add-form").serialize(),
           success: function(data) {
             if (data['status'] != 'ok') {
               

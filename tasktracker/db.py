@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
 
+# ID | name | author | class
+
+BOOKS_FILE = 'books.json'
+
 def get_tasks(login):
     with open('tasks.json') as f:
         tasks = json.load(f)
@@ -8,21 +12,31 @@ def get_tasks(login):
         return []
     return tasks[login]
 
-def add_task(login, text):
-    with open('tasks.json') as f:
+def add_book(name, author, _class):
+    with open(BOOKS_FILE) as f:
         tasks = json.load(f)
-    if not login in tasks:
-        tasks[login] = []
-        task_id = 1
-    else:
-        if len(tasks[login]) == 0:
-            task_id = 1
-        else:
-            task_id = tasks[login][-1]["id"] + 1
-    tasks[login].append({"id": task_id, "text": text})
-    with open('tasks.json', 'w') as f:
+
+    book_id = len(tasks)
+    tasks[book_id] = {
+        'name': name,
+        'author': author,
+        'class': _class,
+    }
+    # if not login in tasks:
+    #     tasks[login] = []
+    #     task_id = 1
+    # else:
+    #     if len(tasks[login]) == 0:
+    #         task_id = 1
+    #     else:
+    #         task_id = tasks[login][-1]["id"] + 1
+    # tasks[login].append({"id": task_id, "text": text})
+
+    with open(BOOKS_FILE, 'w') as f:
         json.dump(tasks, f)
-    return task_id
+
+    return book_id
+
 def new_task(login, text):
     with open('tasks.json') as f:
         new_task = json.load(f)
@@ -42,6 +56,7 @@ def new_task(login, text):
     with open('tasks.json', 'w') as f:
         json.dump(new_task, f)
     return task_id
+
 def remove_task(login, id):
     with open('tasks.json') as f:
         tasks = json.load(f)

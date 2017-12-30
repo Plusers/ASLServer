@@ -17,6 +17,11 @@ def index():
 def login():
     return render_template('login.html')
     
+@app.route('/registration', methods=["GET"])
+@not_authorized
+def registration():
+    return  render_template('reg.html')
+    
 @app.route('/ind_put', methods=["GET"])
 @authorized
 def ind_put():
@@ -31,6 +36,7 @@ def menu():
 @not_authorized
 def api_login():
     login = request.form.get('login', None)
+
     password = request.form.get('password', None)
     if login is None or password is None:
         return jsonify({'status': 'error', 'message': 'Неверные данные для входа'})
@@ -63,11 +69,14 @@ def api_remove_task(task_id):
 @authorized
 def api_add_task():
     login = session['user_login']
-    text = request.form.get('text', None)
-    if text is None:
+    name = request.form.get('name', None)
+    author = request.form.get('author', None)
+    _class = request.form.get('_class', None)
+    if name is None or author is None or _class is None:
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
-    task_id = add_task(login, text)
-    return jsonify({'status': 'ok', 'task_id': task_id})
+    # task_id = add_task(login, text)
+    book_id = add_book(name, author, _class)
+    return jsonify({'status': 'ok', 'task_id': book_id})
 
 @app.route('/api/new_task', methods=["POST"])
 @authorized
