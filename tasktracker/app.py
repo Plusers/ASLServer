@@ -7,15 +7,15 @@ from db import *
 app = Flask("SimpleTaskTracker")
 template_dir = 'templates'
 
-@app.route('/ind', methods=['GET'])
+@app.route('/add_books', methods=['GET'])
 @authorized
-def index():
-    return render_template('index.html')
+def add():
+    return render_template('add_books.html')
 
-@app.route('/list', methods=['GET'])
+@app.route('/list_of_books', methods=['GET'])
 @authorized
 def list():
-    return render_template('list.html')
+    return render_template('list_of_books.html')
 
 
 @app.route('/', methods=["GET"])
@@ -28,10 +28,10 @@ def login():
 def registration():
     return  render_template('reg.html')
     
-@app.route('/ind_put', methods=["GET"])
+@app.route('/extradite_books', methods=["GET"])
 @authorized
-def ind_put():
-    return render_template('index_put.html')
+def extradite_books():
+    return render_template('extradite_books.html')
 
 @app.route('/menu', methods=["GET"])
 @authorized
@@ -58,25 +58,25 @@ def logout():
     session.clear()
     return redirect('/')
 
-@app.route('/api/tasks', methods=["GET"])
+@app.route('/api/books', methods=["GET"])
 @authorized
-def api_tasks():
+def api_books():
     login = session['user_login']
     name = request.form.get('name', None)
     author = request.form.get('author', None)
     _class = request.form.get('_class', None)
-    return jsonify({"tasks": get_tasks(name, author, _class)})
+    return jsonify({"books": get_books(name, author, _class)})
 
-@app.route('/api/remove_task/<int:task_id>', methods=["GET"])
+@app.route('/api/remove_book/<int:book_id>', methods=["GET"])
 @authorized
-def api_remove_task(task_id):
+def api_remove_book(book_id):
     login = session['user_login']
-    remove_task(login, task_id)
+    remove_book(login, book_id)
     return jsonify({'status': 'ok'})
 
-@app.route('/api/add_task', methods=["POST"])
+@app.route('/api/add_book', methods=["POST"])
 @authorized
-def api_add_task():
+def api_add_book():
     login = session['user_login']
     name = request.form.get('name', None)
     author = request.form.get('author', None)
@@ -85,17 +85,8 @@ def api_add_task():
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
     # task_id = add_task(login, text)
     book_id = add_book(name, author, _class)
-    return jsonify({'status': 'ok', 'task_id': book_id})
+    return jsonify({'status': 'ok', 'book_id': book_id})
 
-@app.route('/api/new_task', methods=["POST"])
-@authorized
-def api_new_task():
-    login = session['user_login']
-    text = request.form.get('text', None)
-    if text is None:
-        return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
-    task_id = new_task(login, text)
-    return jsonify({'status': 'ok', 'task_id': task_id})
 
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
