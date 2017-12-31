@@ -5,12 +5,12 @@ import json
 
 BOOKS_FILE = 'books.json'
 
-def get_tasks(login):
-    with open('tasks.json') as f:
+def get_tasks(name, author, _class):
+    with open('books.json') as f:
         tasks = json.load(f)
-    if not login in tasks:
+    if not name or author or _class in tasks:
         return []
-    return tasks[login]
+    return tasks[name, author , _class]
 
 def add_book(name, author, _class):
     with open(BOOKS_FILE) as f:

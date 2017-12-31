@@ -44,9 +44,8 @@
           data:    $("#add-form").serialize(),
           success: function(data) {
             if (data['status'] != 'ok') {
-              
             } else {
-              add_task_to_list(data['task_id'], $('#add_task_text').val())
+              add_task_to_list(data['task_id'], $("#add-form").serialize())
             }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
@@ -75,9 +74,9 @@
       });
     }
 
-    function add_task_to_list(id, text) {
-      $('#tasks_list').append('<div id="task_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + text +
-        '</div><button class="btn btn-default" type="button" onclick="task_done(' + id + ')">Удалить</button><button class="btn btn-default" type="button" onclick="new_task(' + id + ')">Выдать</button>')
+    function add_task_to_list(id, name, author, _class) {
+      $('#tasks_list').append('<div id="task_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class+
+        '</div>')
       }
     
   
@@ -107,7 +106,7 @@
           success: function(data) {
               for (i in data["tasks"]) {
                 task = data["tasks"][i]
-                add_task_to_list(task["id"], task["text"])
+                add_task_to_list(task["id"], task["name"], task["author"], task["_class"])
               }
           },
           error:   function(jqXHR, textStatus, errorThrown) {

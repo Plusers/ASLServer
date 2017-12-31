@@ -12,6 +12,12 @@ template_dir = 'templates'
 def index():
     return render_template('index.html')
 
+@app.route('/list', methods=['GET'])
+@authorized
+def list():
+    return render_template('list.html')
+
+
 @app.route('/', methods=["GET"])
 @not_authorized
 def login():
@@ -56,7 +62,10 @@ def logout():
 @authorized
 def api_tasks():
     login = session['user_login']
-    return jsonify({"tasks": get_tasks(login)})
+    name = request.form.get('name', None)
+    author = request.form.get('author', None)
+    _class = request.form.get('_class', None)
+    return jsonify({"tasks": get_tasks(name, author, _class)})
 
 @app.route('/api/remove_task/<int:task_id>', methods=["GET"])
 @authorized
