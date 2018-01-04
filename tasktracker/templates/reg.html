@@ -33,23 +33,20 @@
           <label for="inputPassword" class="sr-only">Повторите Пароль</label>
           <input type="password" name="confirm_password" id="inputPassword" class="form-control" placeholder="Повторите Пароль" required>
         </form>
-        <button class="btn btn-lg btn-primary btn-block" id="post-btn" onclick="send_form()">Зарегистрироваться</button>
+        <button class="btn btn-lg btn-primary btn-block" id="post-btn" onclick="add_user()">Зарегистрироваться</button>
       </div>
 
     </div> <!-- /container -->
 
     <script>
-    function send_form() {
-      $.ajax({
-          type:    "POST",
-          url:     "/api/registration",
+     function add_user() {
+      $.post({
+          url:     "/api/add_user",
           data:    $("#reg-form").serialize(),
           success: function(data) {
-                if (data['status'] != 'ok') {
-                  alert(data['message'])
-                } else {
-                  window.location.replace('/')
-                }
+            if (data['status'] != 'ok') {
+            } else {
+            }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
                 alert("Error, status = " + textStatus + ", " +
@@ -58,6 +55,22 @@
           }
       });
     }
+    $( document ).ready(function() {
+      $.get({
+          url:     "/api/users",
+          data:    "",
+          success: function(data) {
+              for (i in data["users"]) {
+                user = data["users"][i]
+              }
+          },
+          error:   function(jqXHR, textStatus, errorThrown) {
+                alert("Error, status = " + textStatus + ", " +
+                      "error thrown: " + errorThrown
+                );
+          }
+      });
+    });
     </script>
 </body>
 </html>

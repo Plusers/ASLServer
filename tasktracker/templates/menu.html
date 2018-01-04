@@ -1,13 +1,14 @@
 <html>
 <head>
-<style background='back.png' >
+<style>
 .dropbtn {
     background-color: #4CAF50;
     color: white;
     padding: 16px;
     font-size: 16px;
-    border: none;
+    border: -50% 50%;
     cursor: pointer;
+    text-align: center;
 }
 
 .dropbtn:hover, .dropbtn:focus {
@@ -17,6 +18,7 @@
 .dropdown {
     position: relative;
     display: inline-block;
+    text-align: center;
 }
 
 .dropdown-content {
@@ -27,6 +29,7 @@
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    text-align: center;
 }
 
 .dropdown-content a {
@@ -40,12 +43,16 @@
 
 .show {display:block;}
 </style>
+<style>
+  .center { 
+    text-align: center; 
+  }
+</style>
 </head>
-<body>
+<body { background-image: url(back.png);>
 
-<h2>Click Menu</h2>
-
-
+<div class = "center">
+<h2 >Click Menu</h2>
 <div class="dropdown">
 <button onclick="myFunction()" class="dropbtn">Menu</button>
   <div id="myDropdown" class="dropdown-content">
@@ -54,9 +61,11 @@
     <a href="/add_books">Добавить книгу</a>
     <a href ='/extradite_books'>Выдать книгу</a>
     <a href=''>Сдать книгу</a>
+    <a href='/logout'>Выйти из аккаунта</a>
+    
   </div>
 </div>
-
+</div>
 <script>
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */

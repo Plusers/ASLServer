@@ -28,6 +28,20 @@ def login():
 def registration():
     return  render_template('reg.html')
     
+@app.route('/api/add_user', methods=["POST"])
+@authorized
+def api_add_user():
+    
+    login = request.form.get('login', None)
+    password = request.form.get('password', None)
+    confirm_password = request.form.get('confirm_password', None)
+    if login is None or password is None or confirm_password is None:
+        return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
+    # task_id = add_task(login, text)
+    user_id = add_user(login, password, confirm_password)
+    return jsonify({'status': 'ok', 'user_id': user_id})
+
+
 @app.route('/extradite_books', methods=["GET"])
 @authorized
 def extradite_books():
@@ -66,6 +80,15 @@ def api_books():
     author = request.form.get('author', None)
     _class = request.form.get('_class', None)
     return jsonify({"books": get_books(name, author, _class)})
+
+@app.route('/api/users', methods=["GET"])
+@authorized
+def api_users():
+    
+    login = request.form.get('login', None)
+    password = request.form.get('password', None)
+    confirm_password = request.form.get('confirm_password', None)
+    return jsonify({"users": get_users(login, password, confirm_password)})
 
 @app.route('/api/remove_book/<int:book_id>', methods=["GET"])
 @authorized

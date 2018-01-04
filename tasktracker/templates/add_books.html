@@ -45,25 +45,7 @@
           success: function(data) {
             if (data['status'] != 'ok') {
             } else {
-              add_book_to_list(data['task_id'], $("#add-form").serialize())
-            }
-          },
-          error:   function(jqXHR, textStatus, errorThrown) {
-                alert("Error, status = " + textStatus + ", " +
-                      "error thrown: " + errorThrown
-                );
-          }
-      });
-    }
-    function new_task() {
-      $.post({
-          url:     "/api/new_task",
-          data:    "text=" + $('#add_task_text').val(),
-          success: function(data) {
-            if (data['status'] != 'ok') {
-              alert(data['message'])
-              add_new_task_to_list(data['task_id'], $('#add_task_text').val())
-            } else {
+              add_book_to_list(data['task_id'], $("#add_book_to_list").val())
             }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
