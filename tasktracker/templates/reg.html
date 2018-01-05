@@ -39,38 +39,39 @@
     </div> <!-- /container -->
 
     <script>
-     function add_user() {
-      $.post({
-          url:     "/api/add_user",
-          data:    $("#reg-form").serialize(),
-          success: function(data) {
-            if (data['status'] != 'ok') {
-            } else {
-            }
-          },
-          error:   function(jqXHR, textStatus, errorThrown) {
-                alert("Error, status = " + textStatus + ", " +
-                      "error thrown: " + errorThrown
-                );
-          }
-      });
-    }
-    $( document ).ready(function() {
-      $.get({
-          url:     "/api/users",
-          data:    "",
-          success: function(data) {
-              for (i in data["users"]) {
-                user = data["users"][i]
+      function add_user() {
+        $.post({
+            url:     "/api/add_user",
+            data:    $("#reg-form").serialize(),
+            success: function(data) {
+              if (data['status'] != 'ok') {
+              } else {
+                // тут напиши редирект на индекс или список книг
               }
-          },
-          error:   function(jqXHR, textStatus, errorThrown) {
-                alert("Error, status = " + textStatus + ", " +
-                      "error thrown: " + errorThrown
-                );
-          }
-      });
-    });
+            },
+            error:   function(jqXHR, textStatus, errorThrown) {
+                  alert("Error, status = " + textStatus + ", " +
+                        "error thrown: " + errorThrown
+                  );
+            }
+        });
+      }
+      // $( document ).ready(function() {
+      //   $.get({
+      //       url:     "/api/users",
+      //       data:    "",
+      //       success: function(data) {
+      //           for (i in data["users"]) {
+      //             user = data["users"][i]
+      //           }
+      //       },
+      //       error:   function(jqXHR, textStatus, errorThrown) {
+      //             alert("Error, status = " + textStatus + ", " +
+      //                   "error thrown: " + errorThrown
+      //             );
+      //       }
+      //   });
+      // });
     </script>
 </body>
 </html>

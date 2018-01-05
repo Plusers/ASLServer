@@ -49,6 +49,7 @@ def add_user(login, password, confirm_password):
     with open(USERS_FILE) as f:
         users = json.load(f)
 
+    print('@@@ add_user fired')
     user_id = len(users)
     users[user_id] = {
         'login': login,
