@@ -4,14 +4,14 @@ import json
 # ID | name | author | class
 
 BOOKS_FILE = 'books.json'
-USERS_FILE = 'add_users.json'
+USERS_FILE = 'users.json'
 
-def get_books(name, author, _class):
-    with open('books.json') as f:
+def get_books(login):
+    with open(BOOKS_FILE) as f:
         books = json.load(f)
-    if not name or author or _class in books:
+    if not login in books:
         return []
-    return books[name, author , _class]
+    return books[login]
 
 def add_book(name, author, _class):
     with open(BOOKS_FILE) as f:
@@ -38,22 +38,21 @@ def add_book(name, author, _class):
 
     return book_id
 
-def get_users(login, password, confirm_password):
-    with open('add_users.json') as f:
+def get_users(login, password, confirm_password, profile):
+    with open('users.json') as f:
         users = json.load(f)
-    if not login or password or confirm_password in users:
+    if not login or password or confirm_password or profile in users:
         return []
-    return users[login, password , confirm_password]
+    return users[login, password , confirm_password, profile]
 
-def add_user(login, password, confirm_password):
+def add_user(login, password, confirm_password, profile):
     with open(USERS_FILE) as f:
         users = json.load(f)
 
     user_id = len(users)
-    users[user_id] = {
-        'login': login,
+    users[login] = {
         'password': password,
-        'confirm_password': confirm_password,
+        'profile' : profile,
     }
     # if not login in tasks:
     #     tasks[login] = []

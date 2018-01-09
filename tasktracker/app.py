@@ -28,18 +28,7 @@ def login():
 def registration():
     return  render_template('reg.html')
     
-@app.route('/api/add_user', methods=["POST"])
-@authorized
-def api_add_user():
-    
-    login = request.form.get('login', None)
-    password = request.form.get('password', None)
-    confirm_password = request.form.get('confirm_password', None)
-    if login is None or password is None or confirm_password is None:
-        return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
-    # task_id = add_task(login, text)
-    user_id = add_user(login, password, confirm_password)
-    return jsonify({'status': 'ok', 'user_id': user_id})
+
 
 
 @app.route('/extradite_books', methods=["GET"])
@@ -79,16 +68,17 @@ def api_books():
     name = request.form.get('name', None)
     author = request.form.get('author', None)
     _class = request.form.get('_class', None)
-    return jsonify({"books": get_books(name, author, _class)})
+    return jsonify({"books": get_books(login)})
 
 @app.route('/api/users', methods=["GET"])
-@authorized
+@not_authorized
 def api_users():
     
     login = request.form.get('login', None)
     password = request.form.get('password', None)
     confirm_password = request.form.get('confirm_password', None)
-    return jsonify({"users": get_users(login, password, confirm_password)})
+    profile = request.form.get('profile', None)
+    return jsonify({"users": get_users(login, password, confirm_password, profile)})
 
 @app.route('/api/remove_book/<int:book_id>', methods=["GET"])
 @authorized
@@ -108,7 +98,20 @@ def api_add_book():
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
     # task_id = add_task(login, text)
     book_id = add_book(name, author, _class)
-    return jsonify({'status': 'ok', 'book_id': book_id})
+    return jsonify({'status': 'ok', 'book_id': book_id, 'name': name, 'author': author, '_class': _class})
+
+@app.route('/api/add_user', methods=["POST"])
+@not_authorized
+def api_add_user():
+    login = request.form.get('login', None)
+    password = request.form.get('password', None)
+    confirm_password = request.form.get('confirm_password', None)
+    profile = request.form.get('profile', None)
+    if login is None or password is None or confirm_password is None or profile is None:
+        return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
+    # task_id = add_task(login, text)
+    user_id = add_user(login, password, confirm_password, profile)
+    return jsonify({'status': 'ok', 'user_id': user_id})
 
 
 if __name__ == "__main__":

@@ -34,6 +34,24 @@
   </div>
 
   <script>
+   function add_book() {
+      $.post({
+          url:     "/api/add_book",
+          data:    $("#add-form").serialize(),
+          success: function(data) {
+            if (data['status'] != 'ok') {
+            } else {
+              add_book_to_list(data['task_id'], $("#add_book_to_list").val())
+            }
+          },
+          error:   function(jqXHR, textStatus, errorThrown) {
+                alert("Error, status = " + textStatus + ", " +
+                      "error thrown: " + errorThrown
+                );
+          }
+      });
+    }
+
     
     function add_book_to_list(id, name, author, _class) {
       $('#book_list').append('<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class+
@@ -45,8 +63,7 @@
           url:     "/api/books",
           data:    "",
           success: function(data) {
-              for (i in data["books"]) {
-                book = data["books"][i]
+              for (book in data["books"]) {
                 add_book_to_list(book["id"], book["name"], book["author"], book["_class"])
               }
           },

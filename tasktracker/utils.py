@@ -7,6 +7,8 @@ with open('users.json') as users_file:
 
 class User(object):
     def __init__(self, login):
+        with open('users.json') as users_file:
+            g_users = json.load(users_file)
         if login is not None and login in g_users:
             self.login = login
             self.anonymous = False
