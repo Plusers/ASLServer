@@ -4,7 +4,7 @@ import json
 # ID | name | author | class
 
 BOOKS_FILE = 'books.json'
-USERS_FILE = 'add_users.json'
+USERS_FILE = 'users.json'
 
 def get_books(name, author, _class):
     with open('books.json') as f:
@@ -39,7 +39,7 @@ def add_book(name, author, _class):
     return book_id
 
 def get_users(login, password, confirm_password):
-    with open('add_users.json') as f:
+    with open(USERS_FILE) as f:
         users = json.load(f)
     if not login or password or confirm_password in users:
         return []

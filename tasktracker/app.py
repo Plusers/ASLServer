@@ -1,5 +1,5 @@
 from flask import Flask, abort, render_template, request, jsonify, session, redirect
-import utils
+from utils import authorized, not_authorized, authorize
 import db
 
 
@@ -48,11 +48,12 @@ def logout():
 @not_authorized
 def api_login():
     login = request.form.get('login', None)
-
     password = request.form.get('password', None)
+    print('@@@ parsed login and password')
     if login is None or password is None:
         return jsonify({'status': 'error', 'message': 'Неверные данные для входа'})
     user = authorize(login, password)
+    print('@@@ created user object', user)
     if user.is_authorized():
         session['user_login'] = login
         return jsonify({'status': 'ok'})
@@ -67,8 +68,7 @@ def api_add_user():
     print('@@@ api_add_user fired')
     if login is None or password is None or confirm_password is None:
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
-    # task_id = add_task(login, text)
-    user_id = add_user(login, password, confirm_password)
+    user_id = db.add_user(login, password, confirm_password)
     return jsonify({'status': 'ok', 'user_id': user_id})
 
 @app.route('/api/books', methods=["GET"])
@@ -78,7 +78,7 @@ def api_books():
     name = request.form.get('name', None)
     author = request.form.get('author', None)
     _class = request.form.get('_class', None)
-    return jsonify({"books": get_books(name, author, _class)})
+    return jsonify({"books": db.get_books(name, author, _class)})
 
 @app.route('/api/users', methods=["GET"])
 @authorized
@@ -86,13 +86,13 @@ def api_users():
     login = request.form.get('login', None)
     password = request.form.get('password', None)
     confirm_password = request.form.get('confirm_password', None)
-    return jsonify({"users": get_users(login, password, confirm_password)})
+    return jsonify({"users": db.get_users(login, password, confirm_password)})
 
 @app.route('/api/remove_book/<int:book_id>', methods=["GET"])
 @authorized
 def api_remove_book(book_id):
     login = session['user_login']
-    remove_book(login, book_id)
+    db.remove_book(login, book_id)
     return jsonify({'status': 'ok'})
 
 @app.route('/api/add_book', methods=["POST"])
@@ -105,7 +105,7 @@ def api_add_book():
     if name is None or author is None or _class is None:
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
     # task_id = add_task(login, text)
-    book_id = add_book(name, author, _class)
+    book_id = db.add_book(name, author, _class)
     return jsonify({'status': 'ok', 'book_id': book_id})
 
 

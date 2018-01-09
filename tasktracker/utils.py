@@ -1,12 +1,16 @@
 import json
 from flask import redirect, session
 from functools import wraps
+from db import USERS_FILE
 
-with open('users.json') as users_file:
+with open(USERS_FILE) as users_file:
     g_users = json.load(users_file)
 
 class User(object):
     def __init__(self, login):
+        with open(USERS_FILE) as users_file:
+            g_users = json.load(users_file)
+
         if login is not None and login in g_users:
             self.login = login
             self.anonymous = False
@@ -23,7 +27,7 @@ class User(object):
 
 def authorize(login, password):
     user = User(login)
-    if not user.is_authorized():
+    if user.is_anonymous():
         return user
     if user.password == password:
         return user

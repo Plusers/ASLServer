@@ -45,7 +45,8 @@
           success: function(data) {
             if (data['status'] != 'ok') {
             } else {
-              add_book_to_list(data['task_id'], $("#add_book_to_list").val())
+              // add_book_to_list(data['task_id'], $("#add_book_to_list").val())
+              
             }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
@@ -60,12 +61,6 @@
       $('#books_list').append('<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class+
         '</div>')
       }
-    
-  
-    
-
-
-
     
     $( document ).ready(function() {
       $.get({

@@ -31,12 +31,12 @@
           <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
 
           <label for="inputPassword" class="sr-only">Повторите Пароль</label>
-          <input type="password" name="confirm_password" id="inputPassword" class="form-control" placeholder="Повторите Пароль" required>
+          <input type="password" name="confirm_password" id="inputConfirmPassword" class="form-control" placeholder="Повторите Пароль" required>
         </form>
         <button class="btn btn-lg btn-primary btn-block" id="post-btn" onclick="add_user()">Зарегистрироваться</button>
       </div>
 
-    </div> <!-- /container -->
+    </div>
 
     <script>
       function add_user() {
@@ -46,6 +46,7 @@
             success: function(data) {
               if (data['status'] != 'ok') {
               } else {
+                // jquery redirect
                 // тут напиши редирект на индекс или список книг
               }
             },
