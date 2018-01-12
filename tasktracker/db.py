@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 import json
 
-# ID | name | author | class
 
 BOOKS_FILE = 'books.json'
 USERS_FILE = 'users.json'
 
 def get_books(name, author, _class):
-    with open('books.json') as f:
+    with open(BOOKS_FILE) as f:
         books = json.load(f)
+
     if not name or author or _class in books:
         return []
     return books[name, author , _class]
@@ -23,15 +22,6 @@ def add_book(name, author, _class):
         'author': author,
         'class': _class,
     }
-    # if not login in tasks:
-    #     tasks[login] = []
-    #     task_id = 1
-    # else:
-    #     if len(tasks[login]) == 0:
-    #         task_id = 1
-    #     else:
-    #         task_id = tasks[login][-1]["id"] + 1
-    # tasks[login].append({"id": task_id, "text": text})
 
     with open(BOOKS_FILE, 'w') as f:
         json.dump(books, f)
@@ -49,21 +39,11 @@ def add_user(login, password, confirm_password, profile):
     with open(USERS_FILE) as f:
         users = json.load(f)
 
-    print('@@@ add_user fired')
     user_id = len(users)
     users[login] = {
         'password': password,
         'profile': profile,
     }
-    # if not login in tasks:
-    #     tasks[login] = []
-    #     task_id = 1
-    # else:
-    #     if len(tasks[login]) == 0:
-    #         task_id = 1
-    #     else:
-    #         task_id = tasks[login][-1]["id"] + 1
-    # tasks[login].append({"id": task_id, "text": text})
 
     with open(USERS_FILE, 'w') as f:
         json.dump(users, f)
@@ -71,7 +51,7 @@ def add_user(login, password, confirm_password, profile):
     return user_id
 
 def remove_book(login, id):
-    with open('books.json') as f:
+    with open(BOOKS_FILE) as f:
         books = json.load(f)
     if not login in books:
         return
