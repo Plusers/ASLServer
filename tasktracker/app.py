@@ -65,10 +65,13 @@ def api_add_user():
     login = request.form.get('login', None)
     password = request.form.get('password', None)
     confirm_password = request.form.get('confirm_password', None)
+    profile = request.form.get('profile', None)
     print('@@@ api_add_user fired')
-    if login is None or password is None or confirm_password is None:
+    if password != confirm_password:
+        return jsonify({'status': 'error', 'message': 'Пароли не совпадают'})
+    if login is None or password is None or confirm_password is None or profile is None:
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
-    user_id = db.add_user(login, password, confirm_password)
+    user_id = db.add_user(login, password, confirm_password, profile)
     return jsonify({'status': 'ok', 'user_id': user_id})
 
 @app.route('/api/books', methods=["GET"])
@@ -86,7 +89,8 @@ def api_users():
     login = request.form.get('login', None)
     password = request.form.get('password', None)
     confirm_password = request.form.get('confirm_password', None)
-    return jsonify({"users": db.get_users(login, password, confirm_password)})
+    profile = request.form.get('profile', None)
+    return jsonify({"users": db.get_users(login, password, confirm_password, profile)})
 
 @app.route('/api/remove_book/<int:book_id>', methods=["GET"])
 @authorized

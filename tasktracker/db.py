@@ -38,23 +38,22 @@ def add_book(name, author, _class):
 
     return book_id
 
-def get_users(login, password, confirm_password):
+def get_users(login, password, confirm_password, profile):
     with open(USERS_FILE) as f:
         users = json.load(f)
-    if not login or password or confirm_password in users:
+    if not login or password or confirm_password or profile in users:
         return []
-    return users[login, password , confirm_password]
+    return users[login, password , confirm_password, profile]
 
-def add_user(login, password, confirm_password):
+def add_user(login, password, confirm_password, profile):
     with open(USERS_FILE) as f:
         users = json.load(f)
 
     print('@@@ add_user fired')
     user_id = len(users)
-    users[user_id] = {
-        'login': login,
+    users[login] = {
         'password': password,
-        'confirm_password': confirm_password,
+        'profile': profile,
     }
     # if not login in tasks:
     #     tasks[login] = []
