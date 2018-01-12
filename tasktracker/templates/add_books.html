@@ -44,6 +44,7 @@
           data:    $("#add-form").serialize(),
           success: function(data) {
             if (data['status'] != 'ok') {
+              alert(data['message'])
             } else {
               // add_book_to_list(data['task_id'], $("#add_book_to_list").val())
               
@@ -56,11 +57,6 @@
           }
       });
     }
-
-    function add_book_to_list(id, name, author, _class) {
-      $('#books_list').append('<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class+
-        '</div>')
-      }
     
     $( document ).ready(function() {
       $.get({

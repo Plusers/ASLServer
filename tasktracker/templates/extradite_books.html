@@ -31,15 +31,15 @@
   </div>
 
   <script>
-    function add_task() {
+    function add_book() {
       $.post({
-          url:     "/api/add_task",
-          data:    "text=" + $('#add_task_text').val(),
+          url:     "/api/add_book",
+          data:    $("#add-form").serialize(),
           success: function(data) {
             if (data['status'] != 'ok') {
               alert(data['message'])
             } else {
-              add_task_to_list(data['task_id'], $('#add_task_text').val())
+              add_task_to_list(data['book_id'], $('#add_form').val())
             }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
@@ -50,17 +50,17 @@
       });
     }
 
-    function add_task_to_list(id, text) {
-      $('#tasks_list').append('<div id="new_task' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + text +
+    function add_book_to_list(id, name, author, _class) {
+      $('#books_list').append('<div id="new_book' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class +
         '</div>')
     }
 
-    function task_done(id) {
+    function book_done(id) {
       $.get({
-          url:     "/api/remove_task/" + id,
+          url:     "/api/remove_book/" + id,
           data:    "",
           success: function(data) {
-            $('#task_' + id).remove()
+            $('#book_' + id).remove()
           },
           error:   function(jqXHR, textStatus, errorThrown) {
                 alert("Error, status = " + textStatus + ", " +
@@ -72,12 +72,11 @@
 
     $( document ).ready(function() {
       $.get({
-          url:     "/api/tasks",
+          url:     "/api/books",
           data:    "",
           success: function(data) {
-              for (i in data["tasks"]) {
-                task = data["tasks"][i]
-                add_task_to_list(task["id"], task["text"])
+              for (book in data["books"]) {
+                add_task_to_list(book["id"], book["name"], book["author"], book["_class"])
               }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
