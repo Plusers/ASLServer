@@ -49,11 +49,9 @@ def logout():
 def api_login():
     login = request.form.get('login', None)
     password = request.form.get('password', None)
-    print('@@@ parsed login and password')
     if login is None or password is None:
         return jsonify({'status': 'error', 'message': 'Неверные данные для входа'})
     user = authorize(login, password)
-    print('@@@ created user object', user)
     if user.is_authorized():
         session['user_login'] = login
         return jsonify({'status': 'ok'})
@@ -66,7 +64,6 @@ def api_add_user():
     password = request.form.get('password', None)
     confirm_password = request.form.get('confirm_password', None)
     profile = request.form.get('profile', None)
-    print('@@@ api_add_user fired')
     if password != confirm_password:
         return jsonify({'status': 'error', 'message': 'Пароли не совпадают'})
     if login is None or password is None or confirm_password is None or profile is None:
