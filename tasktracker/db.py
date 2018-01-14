@@ -6,19 +6,16 @@ import json
 BOOKS_FILE = 'books.json'
 USERS_FILE = 'users.json'
 
-def get_books(name, author, _class):
+def get_books(login):
     with open('books.json') as f:
         books = json.load(f)
-    if not name or author or _class in books:
-        return []
-    return books[name, author , _class]
+    return books[login]
 
-def add_book(name, author, _class):
+def add_book(login, name, author, _class):
     with open(BOOKS_FILE) as f:
         books = json.load(f)
-
-    book_id = len(books)
-    books[book_id] = {
+    
+    books[login] = {
         'name': name,
         'author': author,
         'class': _class,
@@ -36,7 +33,7 @@ def add_book(name, author, _class):
     with open(BOOKS_FILE, 'w') as f:
         json.dump(books, f)
 
-    return book_id
+    return login
 
 def get_users(login, password, confirm_password, profile):
     with open(USERS_FILE) as f:

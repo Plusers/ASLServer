@@ -81,7 +81,7 @@ def api_books():
     name = request.form.get('name', None)
     author = request.form.get('author', None)
     _class = request.form.get('_class', None)
-    return jsonify({"books": db.get_books(name, author, _class)})
+    return jsonify({"books": db.get_books(login)})
 
 @app.route('/api/users', methods=["GET"])
 @authorized
@@ -109,7 +109,7 @@ def api_add_book():
     if name is None or author is None or _class is None:
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
     # task_id = add_task(login, text)
-    book_id = db.add_book(name, author, _class)
+    book_id = db.add_book(login, name, author, _class)
     return jsonify({'status': 'ok', 'book_id': book_id})
 
 
