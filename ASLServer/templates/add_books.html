@@ -27,6 +27,8 @@
         <input type="text" name="name" class="form-control" id="name" placeholder="Название">
         <input type="text" name="author" class="form-control" id='author' placeholder="Автор">
         <input type="text" name="_class" class="form-control" id="_class" placeholder="Класс">
+        <input type="text" name="numIzd" class="form-control" id="numIzd" placeholder="Номер Издания (Например: 2-ое дополненное)">
+        <input type="text" name="nameIzd" class="form-control" id="nameIzd" placeholder="Название Издания (Например: ФГОС)">
       </form>
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" onclick="add_book()">Добавить</button>
@@ -57,7 +59,7 @@
       });
     }
     function add_book_to_list(id, name, author, _class) {
-      $('#books_info').append('<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class+
+      $('#books_info').append('<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class+numIzd+nameIzd
         '</div>')
       }
     
@@ -70,7 +72,7 @@
           data:    "",
           success: function(data) {
               for (book in data["books"]) {
-                add_book_to_list(book["id"], book["name"], book["author"], book["_class"])
+                add_book_to_list(book["id"], book["name"], book["author"], book["_class"], book["numIzd"], book["nameIzd"])
               }
           },
           error:   function(jqXHR, textStatus, errorThrown) {

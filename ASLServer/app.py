@@ -82,6 +82,8 @@ def api_books():
     name = request.form.get('name', None)
     author = request.form.get('author', None)
     _class = request.form.get('_class', None)
+    numIzd = request.form.get('numIzd', None)
+    nameIzd = request.form.get('nameIzd', None)
     return jsonify({"books": db.get_books(login)})
 
 @app.route('/api/users', methods=["GET"])
@@ -96,13 +98,6 @@ def api_users():
     profile = request.form.get('profile', None)
     return jsonify({"users": db.get_users(login, name, surname, third_name, password, confirm_password, profile)})
 
-@app.route('/api/remove_book/<int:book_id>', methods=["GET"])
-@authorized
-def api_remove_book(book_id):
-    login = session['user_login']
-    db.remove_book(login, book_id)
-    return jsonify({'status': 'ok'})
-
 @app.route('/api/add_book', methods=["POST"])
 @authorized
 def api_add_book():
@@ -110,10 +105,12 @@ def api_add_book():
     name = request.form.get('name', None)
     author = request.form.get('author', None)
     _class = request.form.get('_class', None)
-    if name is None or author is None or _class is None:
+    numIzd = request.form.get('numIzd', None)
+    nameIzd = request.form.get('nameIzd', None)
+    if name is None or author is None or _class is None or numIzd is None or nameIzd is None:
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
     # task_id = add_task(login, text)
-    book_id = db.add_book(login, name, author, _class)
+    book_id = db.add_book(login, name, author, _class, numIzd, nameIzd)
     return jsonify({'status': 'ok', 'book_id': book_id})
 
 

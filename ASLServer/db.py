@@ -12,7 +12,7 @@ def get_books(login):
         return []
     return books[login]
 
-def add_book(login, name, author, _class):
+def add_book(login, name, author, _class, numIzd, nameIzd):
     with open(BOOKS_FILE) as f:
         books = json.load(f)
     book_id = len(books)
@@ -20,8 +20,12 @@ def add_book(login, name, author, _class):
         'name': name,
         'author': author,
         'class': _class,
+        'numIzd': numIzd,
+        'nameIzd': nameIzd,
     }
-
+    img = qrcode.make(login + "/" + name + "/" + author + "/" + _class +"/"+numIzd+"/"+nameIzd)
+    img.save("/home/vladislav/Документы/ASLServer/ASLServer/qr-books/"+login+".png")
+    img.show()
     with open(BOOKS_FILE, 'w') as f:
         json.dump(books, f)
 
@@ -47,7 +51,7 @@ def add_user(login,name, surname, third_name, password, confirm_password, profil
         'profile': profile,
     }
     img = qrcode.make(login + " " + name + " " + surname + " " + third_name +" "+password+" "+profile)
-    img.save("/home/vladislav/Документы/ASLServer/qr-users/"+name+surname+third_name+".png")
+    img.save("/home/vladislav/Документы/ASLServer/ASLServer/qr-users/"+name+surname+third_name+".png")
     img.show()
     with open(USERS_FILE, 'w') as f:
         json.dump(users, f)
