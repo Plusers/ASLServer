@@ -9,4 +9,6 @@ flask==0.12.2
 itsdangerous==0.24        # via flask
 jinja2==2.10              # via flask
 markupsafe==1.0           # via jinja2
+qrcode==5.3
+six==1.11.0               # via qrcode, six
 werkzeug==0.12.2          # via flask

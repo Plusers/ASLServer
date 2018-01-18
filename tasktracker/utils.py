@@ -49,11 +49,11 @@ def authorized(fn):
 def not_authorized(fn):
     @wraps(fn)
     def wrapped():
-        user = get_user(session.get("user_login", ""))
-        if not user.is_authorized():
-            return fn()
-        else:
+        user = get_user(session.get("user_login", None))
+        if user.is_authorized():
             return redirect('/menu')
+        else:
+            return fn()
     return wrapped
 
     
