@@ -33,7 +33,6 @@
         <button class="btn btn-lg btn-primary btn-block" id="post-btn" onclick="send_form()">Войти</button>
         <button class="btn btn-lg btn-info btn-block" id="post-btn" onclick="location.href='/registration';">Ещё не зарегистрированы?</button>
       </div>
-
     </div>
 
     <script>
@@ -43,16 +42,16 @@
           url:     "/api/login",
           data:    $("#reg-form").serialize(),
           success: function(data) {
-                if (data['status'] != 'ok') {
-                  alert(data['message'])
-                } else {
-                  /*window.location.replace('/')*/
-                }
+            if (data['status'] != 'ok') {
+              alert(data['message'])
+            } else {
+              window.location.replace('/')
+            }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
-                alert("Error, status = " + textStatus + ", " +
-                      "error thrown: " + errorThrown
-                );
+            alert("Error, status = " + textStatus + ", " +
+                  "error thrown: " + errorThrown
+            );
           }
       });
     }
