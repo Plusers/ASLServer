@@ -1,5 +1,5 @@
 import json
-
+import qrcode
 
 BOOKS_FILE = 'books.json'
 USERS_FILE = 'users.json'
@@ -8,13 +8,15 @@ USERS_FILE = 'users.json'
 def get_books(login):
     with open('books.json') as f:
         books = json.load(f)
+    if not login in books:
+        return []
     return books[login]
 
 def add_book(login, name, author, _class):
     with open(BOOKS_FILE) as f:
         books = json.load(f)
-    
-    books[login] = {
+    book_id = len(books)
+    books[book_id] = {
         'name': name,
         'author': author,
         'class': _class,
@@ -25,36 +27,30 @@ def add_book(login, name, author, _class):
 
     return login
 
-def get_users(login, password, confirm_password, profile):
+def get_users(login, name,  surname, third_name, password, confirm_password, profile):
     with open(USERS_FILE) as f:
         users = json.load(f)
-    if not login or password or confirm_password or profile in users:
+    if not login or name or surname  or third_name or password or confirm_password or profile in users:
         return []
-    return users[login, password , confirm_password, profile]
+    return users[login, name, surname, third_name, password , confirm_password, profile]
 
-def add_user(login, password, confirm_password, profile):
+def add_user(login,name, surname, third_name, password, confirm_password, profile):
     with open(USERS_FILE) as f:
         users = json.load(f)
 
     user_id = len(users)
     users[login] = {
+        'name': name,
+        'surname': surname, 
+        'third_name': third_name,    
         'password': password,
         'profile': profile,
     }
-
+    img = qrcode.make(login + " " + name + " " + surname + " " + third_name +" "+password+" "+profile)
+    img.save("/home/vladislav/Документы/ASLServer/qr-users/"+name+surname+third_name+".png")
+    img.show()
     with open(USERS_FILE, 'w') as f:
         json.dump(users, f)
 
     return user_id
 
-def remove_book(login, id):
-    with open(BOOKS_FILE) as f:
-        books = json.load(f)
-    if not login in books:
-        return
-    for i, book in enumerate(books[login]):
-        if book['id'] == id:
-            del books[login][i]
-            break
-    with open('books.json', 'w') as f:
-        json.dump(books, f)
