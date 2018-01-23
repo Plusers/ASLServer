@@ -36,7 +36,6 @@
     </div><!-- /input-group -->
 
     <div id="books_list" style="margin-top: 20px;">
-    <div id="books_info" style="margin-top: 20px;">
     </div>
   </div>
 
@@ -48,7 +47,7 @@
           success: function(data) {
             if (data['status'] != 'ok') {
             } else {
-              add_book_to_list(data['task_id'], $("#add_book_to_list").serialize())
+              add_book_to_list(data['book_id'], $("#add_book_to_list").serialize())
             }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
@@ -58,9 +57,8 @@
           }
       });
     }
-    function add_book_to_list(id, name, author, _class) {
-      $('#books_info').append('<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class+numIzd+nameIzd
-        '</div>')
+    function add_book_to_list(id, name, author, _class, numIzd, nameIzd) {
+      $('#books_list').append('<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + name+author+_class+numIzd+nameIzd +'</div>')
       }
     
   
