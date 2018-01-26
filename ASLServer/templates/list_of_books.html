@@ -17,40 +17,35 @@
     crossorigin="anonymous">
   </script>
 </head>
+
+
 <body>
   <div class="header">
     <h1>Все книги</h1>
   </div>
-  
-
-    <div id="books_list" style="margin-top: 20px;">
-    </div>
+  <div id="books_list" style="margin-top: 20px;">
   </div>
 
-  <script>
-    
-    function add_book_to_list(id, name, author, _class) {
-      $('#books_list').append('<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + $('#add_form').val()+
-        '</div>')
-      }
-    
-  
-    
-    
-    $( document ).ready(function() {
+  <script>    
+    $(document).ready(function() {
       $.get({
-          url:     "/api/books",
-          data:    "",
-          success: function(data) {
-              for (book in data["books"]) {
-                add_book_to_list(book["id"], book["name"], book["author"], book["_class"])
-              }
-          },
-          error:   function(jqXHR, textStatus, errorThrown) {
-                alert("Error, status = " + textStatus + ", " +
-                      "error thrown: " + errorThrown
-                );
+        url:     "/api/books",
+        success: function(data) {
+          console.log(data)
+          for(book of data.books) {
+            $('#books_list').append(
+              // тут html, который ты добавляешь на страницу - просто напиши его нормально
+              // сейчас это что-то непонятное. Ты можешь использовать book.id, book.name и остальное
+              '<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + $('#add_form').val()+
+              '</div>'
+            )
           }
+        },
+        error:   function(jqXHR, textStatus, errorThrown) {
+          alert("Error, status = " + textStatus + ", " +
+                "error thrown: " + errorThrown
+          );
+        }
       });
     });
   </script>
