@@ -12,7 +12,7 @@ def get_books(login):
         return []
     return books[login]
 
-def add_book(login, name, author, _class, numIzd, nameIzd):
+def add_book(login, name, author, clas, numIzd, nameIzd):
     with open(BOOKS_FILE) as f:
         books = json.load(f)
     if not login in books:
@@ -22,13 +22,13 @@ def add_book(login, name, author, _class, numIzd, nameIzd):
         if len(books[login]) == 0:
             book_id = 1
         else:
-            book_id = books[login][-1]["id"] + 1
+            book_id = books[login][-1]["book_id"] + 1
     print("Добавление Книги - START")
     books[login].append({
         'book_id': book_id,
         'name': name,
         'author':author,
-        '_class': _class,
+        'clas': clas,
         'numIzd': numIzd,
         'nameIzd': nameIzd
               
@@ -36,7 +36,7 @@ def add_book(login, name, author, _class, numIzd, nameIzd):
     )
     print("Ending of adding")
     print("START")
-    img_books = qrcode.make("Логин :" + login + "/ID :" + book_id + "/Название :" + name + "/Автор :" + author + "/Класс :" + _class + '/Номер издания :' + numIzd + "/Название издания :" + nameIzd)
+    img_books = qrcode.make(login + "/" + name + "/" + author + "/" + clas +"/"+numIzd+"/"+nameIzd)
     img_books.save("/home/vladislav/Документы/ASLServer/ASLServer/qr-books/"+login+name+".png")
     img_books.show()
     print("add_book has DID")
@@ -44,6 +44,7 @@ def add_book(login, name, author, _class, numIzd, nameIzd):
         json.dump(books, f)
 
     return book_id
+
 
 def get_users(login, name,  surname, third_name, password, confirm_password, profile):
     with open(USERS_FILE) as f:

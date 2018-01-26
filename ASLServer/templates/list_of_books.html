@@ -26,26 +26,29 @@
   <div id="books_list" style="margin-top: 20px;">
   </div>
 
-  <script>    
-    $(document).ready(function() {
+  <script>
+    function add_book_to_list(book_id, name, author, clas, numIzd, nameIzd) {
+      $('#books_list').append('<div id="book_' + book_id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">'+'Название:'+name+' Автор:'+author+' Класс:'+clas+' Номер издания:'+numIzd+' Название издания:'+nameIzd+'</div>')
+      }
+    
+  
+    
+    
+    $( document ).ready(function() {
       $.get({
-        url:     "/api/books",
-        success: function(data) {
-          console.log(data)
-          for(book of data.books) {
-            $('#books_list').append(
-              // тут html, который ты добавляешь на страницу - просто напиши его нормально
-              // сейчас это что-то непонятное. Ты можешь использовать book.id, book.name и остальное
-              '<div id="book_' + id + '" style="margin: 20px;"><div class="alert alert-info" role="alert">' + $('#add_form').val()+
-              '</div>'
-            )
+          url:     "/api/books",
+          data:    "",
+          success: function(data) {
+              for (i in data["books"]) {
+                book = data["books"][i]
+                add_book_to_list(book["book_id"], book["name"], book['author'], book['clas'], book['numIzd'], book['nameIzd'])
+              }
+          },
+          error:   function(jqXHR, textStatus, errorThrown) {
+                alert("Error, status = " + textStatus + ", " +
+                      "error thrown: " + errorThrown
+                );
           }
-        },
-        error:   function(jqXHR, textStatus, errorThrown) {
-          alert("Error, status = " + textStatus + ", " +
-                "error thrown: " + errorThrown
-          );
-        }
       });
     });
   </script>

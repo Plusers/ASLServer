@@ -99,14 +99,15 @@ def api_add_book():
     login = session['user_login']
     name = request.form.get('name', None)
     author = request.form.get('author', None)
-    _class = request.form.get('_class', None)
+    clas = request.form.get('clas', None)
     numIzd = request.form.get('numIzd', None)
     nameIzd = request.form.get('nameIzd', None)
-    if name is None or author is None or _class is None or numIzd is None or nameIzd is None :
+    if name is None or author is None or clas is None or numIzd is None or nameIzd is None :
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
     # task_id = add_task(login, text)
-    book_id = db.add_book(login, name, author, _class, numIzd, nameIzd)
+    book_id = db.add_book(login, name, author, clas, numIzd, nameIzd)
     return jsonify({'status': 'ok', 'book_id': book_id})
+
 
 
 if __name__ == "__main__":
