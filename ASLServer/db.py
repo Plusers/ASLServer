@@ -25,18 +25,19 @@ def add_book(login, name, author, _class, numIzd, nameIzd):
             book_id = books[login][-1]["id"] + 1
     print("Добавление Книги - START")
     books[login].append({
-        'id': book_id,
+        'book_id': book_id,
         'name': name,
-        'author': author,
-        'class': _class,
+        'author':author,
+        '_class': _class,
         'numIzd': numIzd,
-        'nameIzd': nameIzd,
+        'nameIzd': nameIzd
+              
     }
     )
     print("Ending of adding")
     print("START")
-    img_books = qrcode.make(login + "/" + name + "/" + author + "/" + _class +"/"+numIzd+"/"+nameIzd)
-    img_books.save("/home/vladislav/Документы/ASLServer/ASLServer/qr-books/"+login+name+author+".png")
+    img_books = qrcode.make("Логин :" + login + "/ID :" + book_id + "/Название :" + name + "/Автор :" + author + "/Класс :" + _class + '/Номер издания :' + numIzd + "/Название издания :" + nameIzd)
+    img_books.save("/home/vladislav/Документы/ASLServer/ASLServer/qr-books/"+login+name+".png")
     img_books.show()
     print("add_book has DID")
     with open(BOOKS_FILE, 'w') as f:

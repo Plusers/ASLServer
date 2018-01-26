@@ -79,11 +79,6 @@ def api_add_user():
 @authorized
 def api_books():
     login = session['user_login']
-    name = request.form.get('name', None)
-    author = request.form.get('author', None)
-    _class = request.form.get('_class', None)
-    numIzd = request.form.get('numIzd', None)
-    nameIzd = request.form.get('nameIzd', None)
     return jsonify({"books": db.get_books(login)})
 
 @app.route('/api/users', methods=["GET"])
@@ -107,7 +102,7 @@ def api_add_book():
     _class = request.form.get('_class', None)
     numIzd = request.form.get('numIzd', None)
     nameIzd = request.form.get('nameIzd', None)
-    if name is None or author is None or _class is None or numIzd is None or nameIzd is None:
+    if name is None or author is None or _class is None or numIzd is None or nameIzd is None :
         return jsonify({'status': 'error', 'message': 'Некорректный запрос'})
     # task_id = add_task(login, text)
     book_id = db.add_book(login, name, author, _class, numIzd, nameIzd)
