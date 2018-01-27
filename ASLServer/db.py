@@ -34,12 +34,11 @@ def add_book(login, name, author, clas, numIzd, nameIzd):
               
     }
     )
-    print("Ending of adding")
-    print("START")
+    print(book_id)
+    
     img_books = qrcode.make(login + "/" + name + "/" + author + "/" + clas +"/"+numIzd+"/"+nameIzd)
     img_books.save("/home/vladislav/Документы/ASLServer/ASLServer/qr-books/"+login+name+".png")
     img_books.show()
-    print("add_book has DID")
     with open(BOOKS_FILE, 'w') as f:
         json.dump(books, f)
 

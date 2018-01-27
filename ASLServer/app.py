@@ -96,6 +96,7 @@ def api_users():
 @app.route('/api/add_book', methods=["POST"])
 @authorized
 def api_add_book():
+    chet=0
     login = session['user_login']
     name = request.form.get('name', None)
     author = request.form.get('author', None)
