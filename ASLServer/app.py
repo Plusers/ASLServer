@@ -65,13 +65,9 @@ def api_table():
     df.to_excel(writer, 'Results')#Запись в файл
     writer.save()#Сохранение
     name = request.form.get('name', None)
-    print(str(name))
     second_name = request.form.get('second_name', None)
-    print(second_name)
     third_name = request.form.get('third_name', None)
-    print(third_name)
-    qwerty = str(name+' '+second_name+' '+third_name)
-    df_4 = df.loc[df['ФИО'] == (qwerty)]
+    df_4 = df.loc[df['ФИО'] == (name+' '+second_name+' '+third_name)]
     df_4 = df_4.index
     df_4  = str(df_4)
     start = 0
@@ -87,7 +83,7 @@ def api_table():
     print(start, end)
     for j in range(start+1, end):
         end_string = end_string + df_4[j]
-    return jsonify({'status': 'ok', 'message':'Ваше место в списке :'+end_string})    
+    return jsonify({'status': 'error', 'message':'Ваше место в списке :'+end_string})    
 
 @app.route('/api/login', methods=["POST"])
 @not_authorized
@@ -163,7 +159,7 @@ def table_tool():
 @app.route('/table_results', methods=['GET'])
 @authorized
 def table_results():
-    print("table_results start ....")
+    
     return render_template('table_results.html')
 
 
