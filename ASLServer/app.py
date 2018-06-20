@@ -1,6 +1,10 @@
 from flask import Flask, abort, render_template, request, jsonify, session, redirect
 from utils import authorized, not_authorized, authorize
 import db
+import xlrd
+import pandas as pd
+import numpy as np
+import openpyxl
 
 
 app = Flask("SimpleTaskTracker")
@@ -42,7 +46,48 @@ def menu():
 def logout():
     session.clear()
     return redirect('/')
-    
+
+@app.route('/api/table_search', methods=["POST"])
+@authorized
+def api_table():
+    df = pd.read_excel('table.xlsx')#чтение из файла
+    df.loc[df['Характер док-та об образовании'] == 'Оригинал', 'Характер док-та об образовании'] = 1#Сравнение Оригинал или Копия
+    df.loc[df['Характер док-та об образовании'] == 'Копия', 'Характер док-та об образовании'] = 0
+    df.sort_values(['Характер док-та об образовании','Сумма баллов'], ascending = [False,False], inplace = True)
+    ind = len(df.index)
+
+    #df_2.insert('index', index=df_2.index)
+    #df_2.reset_index(inplace=True)
+    df.loc[df['Характер док-та об образовании'] == 1, 'Характер док-та об образовании'] = 'Оригинал'#Сравнение Оригинал или Копия
+    df.loc[df['Характер док-та об образовании'] == 0, 'Характер док-та об образовании'] = 'Копия'
+    writer = pd.ExcelWriter('output.xlsx', engine='openpyxl')#Создание новой таблицы
+    df.index = range(1,ind+1)
+    df.to_excel(writer, 'Results')#Запись в файл
+    writer.save()#Сохранение
+    name = request.form.get('name', None)
+    print(str(name))
+    second_name = request.form.get('second_name', None)
+    print(second_name)
+    third_name = request.form.get('third_name', None)
+    print(third_name)
+    qwerty = str(name+' '+second_name+' '+third_name)
+    df_4 = df.loc[df['ФИО'] == (qwerty)]
+    df_4 = df_4.index
+    df_4  = str(df_4)
+    start = 0
+    end = 0 
+    end_string = ''
+    for i in range(0,len(df_4)):
+        if df_4[i] == '[':
+            start = i
+        if df_4[i] == ']':
+            end = i
+    #df_4 =
+    print(df_4)
+    print(start, end)
+    for j in range(start+1, end):
+        end_string = end_string + df_4[j]
+    return jsonify({'status': 'ok', 'message':'Ваше место в списке :'+end_string})    
 
 @app.route('/api/login', methods=["POST"])
 @not_authorized
@@ -109,6 +154,17 @@ def api_add_book():
     book_id = db.add_book(login, name, author, clas, numIzd, nameIzd)
     return jsonify({'status': 'ok', 'book_id': book_id})
 
+@app.route('/table_tool', methods=['GET'])
+@authorized
+def table_tool():
+    print("table_tool start ....")
+    return render_template('table_tool.html')
+
+@app.route('/table_results', methods=['GET'])
+@authorized
+def table_results():
+    print("table_results start ....")
+    return render_template('table_results.html')
 
 
 if __name__ == "__main__":
