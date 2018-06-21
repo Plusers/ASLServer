@@ -32,13 +32,13 @@
     function table_results() {
       $.ajax({
           type:    "POST",
-          url:     "/api/table_search",
+          url:     "/api/table_results",
           data:    $("#reg-form").serialize(),
           success: function(data) {
                 if (data['status'] != 'ok') {
                   alert(data['message'])
                 } else {
-                  window.location.replace('/')
+                  alert("Good work")
                 }
           },
           error:   function(jqXHR, textStatus, errorThrown) {
