@@ -112,105 +112,109 @@ def api_table():
     #summ = df_4[df_4['Сумма баллов']]
     #for row in df_4.rows:
     #    summ = row['Сумма баллов']
+    #if str(df_4.iloc[0,1])==None:
     print(df_4)
-    summ = int(df_4.iloc[0,6])
-    mat = int(df_4.iloc[0,8])
-    rus = int(df_4.iloc[0,9])
-    inf = int(df_4.iloc[0,7])
-    print(summ, mat, inf, rus)
-    df_4 = df_4.index
-    
-    #print(summ)
-    df_4  = str(df_4)
-    start = 0
-    end = 0
-    end_string = ''
-    for i in range(0,len(df_4)):
-        if df_4[i] == '[':
-            start = i
-        if df_4[i] == ']':
-            end = i
-    #df_4 =
+    if df_4.empty:
+        return jsonify({'status': 'error', 'message':'Таких ФИО нет в таблице либо вы ввели их неправильно!'}) 
+    else:
+        summ = int(df_4.iloc[0,6])
+        mat = int(df_4.iloc[0,8])
+        rus = int(df_4.iloc[0,9])
+        inf = int(df_4.iloc[0,7])
+        print(summ, mat, inf, rus)
+        df_4 = df_4.index
+        
+        #print(summ)
+        df_4  = str(df_4)
+        start = 0
+        end = 0
+        end_string = ''
+        for i in range(0,len(df_4)):
+            if df_4[i] == '[':
+                start = i
+            if df_4[i] == ']':
+                end = i
+        #df_4 =
 
-    print(df_4)
-    print(start, end)
-    for j in range(start+1, end):
-        end_string = end_string + df_4[j]
-    #------elipse diagramm-----------
-    end_index = int(end_string)
-    col_vo = int(col_vo)
-    count_org = 0
-    count_cop = 0
-    for j in range(0,end_index+1):
-        org = str(df.iloc[j,3])
-        if org == 'Оригинал':
-            count_org += 1
-    print('Оригиналов : ',count_org)
-    for i in range(0,end_index+1):
-        cop = str(df.iloc[i,3])
-        if (cop == 'Копия') and (count_cop<(col_vo-count_org)):
-            count_cop += 1
-    print('Копий : ',count_cop)
-    procent = 0
-    good = 0
-    prom_procent = 0 
-    if end_index<=col_vo:
-        procent = 100
-    elif end_index>col_vo:
-        for i in range(1,count_cop+1):
-            prom = (i*100)/count_cop
-            prom_procent = prom+prom_procent
-            good +=1
-        procent = prom_procent/good
-    print(procent)
-    data_names_pie = ['Вероятность попадания','Не попадание']
-    data_values_pie = [int(procent), 100-int(procent)]
+        print(df_4)
+        print(start, end)
+        for j in range(start+1, end):
+            end_string = end_string + df_4[j]
+        #------elipse diagramm-----------
+        end_index = int(end_string)
+        col_vo = int(col_vo)
+        count_org = 0
+        count_cop = 0
+        for j in range(0,end_index+1):
+            org = str(df.iloc[j,3])
+            if org == 'Оригинал':
+                count_org += 1
+        print('Оригиналов : ',count_org)
+        for i in range(0,end_index+1):
+            cop = str(df.iloc[i,3])
+            if (cop == 'Копия') and (count_cop<(col_vo-count_org)):
+                count_cop += 1
+        print('Копий : ',count_cop)
+        procent = 0
+        good = 0
+        prom_procent = 0 
+        if end_index<=col_vo:
+            procent = 100
+        elif end_index>col_vo:
+            for i in range(1,count_cop+1):
+                prom = (i*100)/count_cop
+                prom_procent = prom+prom_procent
+                good +=1
+            procent = prom_procent/good
+        print(procent)
+        data_names_pie = ['Hit','Not Hit']
+        data_values_pie = [int(procent), 100-int(procent)]
 
-    dpi_pie = 80
-    fig_pie = plt.figure(dpi = dpi_pie, figsize = (512 / dpi_pie, 384 / dpi_pie) )
-    mpl.rcParams.update({'font.size': 9})
+        dpi_pie = 80
+        fig_pie = plt.figure(dpi = dpi_pie, figsize = (512 / dpi_pie, 384 / dpi_pie) )
+        mpl.rcParams.update({'font.size': 9})
 
-    plt.title('Распределение кафе по городам России (%)')
+        plt.title('Probability of hitting (%)')
 
-    xs_pie = range(len(data_names_pie))
+        xs_pie = range(len(data_names_pie))
 
-    plt.pie( 
-        data_values_pie, autopct='%.1f', radius = 1.1,
-        explode = [0.15] + [0 for _ in range(len(data_names_pie) - 1)] )
-    plt.legend(
-        bbox_to_anchor = (-0.16, 0.45, 0.25, 0.25),
-        loc = 'lower left', labels = data_names_pie )
-    fig_pie.savefig('pie.png')
-    #------diagramm------------------
-    
-    data_names = ['Summa Ballov', 'Math', 'Rus', 'Inf']
-    data_values = [summ, mat, rus, inf]
+        plt.pie( 
+            data_values_pie, autopct='%.1f', radius = 1.1,
+            explode = [0.15] + [0 for _ in range(len(data_names_pie) - 1)] )
+        plt.legend(
+            bbox_to_anchor = (-0.16, 0.45, 0.25, 0.25),
+            loc = 'lower left', labels = data_names_pie )
+        fig_pie.savefig('pie.png')
+        #------diagramm------------------
+        
+        data_names = ['Sum of points', 'Maths', 'Russian', 'Informatics']
+        data_values = [summ, mat, rus, inf]
 
-    dpi = 80
-    fig = plt.figure(dpi = dpi, figsize = (1024 / dpi, 384 / dpi) )
-    mpl.rcParams.update({'font.size': 10})
+        dpi = 80
+        fig = plt.figure(dpi = dpi, figsize = (1024 / dpi, 384 / dpi) )
+        mpl.rcParams.update({'font.size': 10})
 
-    plt.title('Table')
-    proxod_bal = 240
-    ax = plt.axes()
-    ax.yaxis.grid(True, zorder = 1)
+        plt.title('Table of scores')
+        proxod_bal = 240
+        ax = plt.axes()
+        ax.yaxis.grid(True, zorder = 1)
 
-    xs = range(len(data_names))
+        xs = range(len(data_names))
 
-    plt.bar([x + 0.05 for x in xs], [sr_summ,sr_mat,sr_rus,sr_inf],
-            width = 0.2, color = 'red', alpha = 0.7, label = 'srednee',
-            zorder = 2)
-    plt.bar([x + 0.3 for x in xs], data_values,
-            width = 0.2, color = 'green', alpha = 0.7, label = 'yours',
-            zorder = 2)
-    plt.xticks(xs, data_names)
+        plt.bar([x + 0.05 for x in xs], [sr_summ,sr_mat,sr_rus,sr_inf],
+                width = 0.2, color = 'red', alpha = 0.7, label = 'Average scores',
+                zorder = 2)
+        plt.bar([x + 0.3 for x in xs], data_values,
+                width = 0.2, color = 'green', alpha = 0.7, label = 'Your Score',
+                zorder = 2)
+        plt.xticks(xs, data_names)
 
-    fig.autofmt_xdate(rotation = 25)
+        fig.autofmt_xdate(rotation = 25)
 
-    plt.legend(loc='upper right')
-    plt.show()
-    fig.savefig('bars.png')
-    return jsonify({'status': 'error', 'message':'Ваше место в списке :'+end_string})    
+        plt.legend(loc='upper right')
+        plt.show()
+        fig.savefig('bars.png')
+        return jsonify({'status': 'error', 'message':'Ваше место в списке :'+end_string})    
 
 @app.route('/api/login', methods=["POST"])
 @not_authorized
